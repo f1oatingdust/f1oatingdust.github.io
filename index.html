@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>汪财摩斯码编解码器</title>
+    <style>
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>汪财摩斯码编解码器</h1>
+
+    <h2>输入(只支持26个英文字母和空格):</h2>
+    <textarea id="input"></textarea>
+    <button onclick="encode()">编码</button>
+    <button onclick="decode()">解码</button>
+    <h2>输出:</h2>
+    <textarea id="output"></textarea>
+    <button onclick="copyToClipboard()">复制</button>
+    <p id="copyAlert" style="display: none">已复制到剪贴板</p>
+
+    <script>
+        var morseCode = {
+            "A": "汪呜",
+            "B": "呜汪汪汪",
+            "C": "呜汪呜汪",
+            "D": "呜汪汪",
+            "E": "汪",
+            "F": "汪汪呜汪",
+            "G": "呜呜汪",
+            "H": "汪汪汪汪",
+            "I": "汪汪",
+            "J": "汪呜呜呜",
+            "K": "呜汪呜",
+            "L": "汪呜汪汪",
+            "M": "呜呜",
+            "N": "呜汪",
+            "O": "呜呜呜",
+            "P": "汪呜呜汪",
+            "Q": "呜呜汪呜",
+            "R": "汪呜汪",
+            "S": "汪汪汪",
+            "T": "呜",
+            "U": "汪汪呜",
+            "V": "汪汪汪呜",
+            "W": "汪呜呜",
+            "X": "呜汪汪呜",
+            "Y": "呜汪呜呜",
+            "Z": "呜呜汪汪",
+        };
+
+        function encode() {
+            var input = document.getElementById('input').value.toUpperCase();
+            var output = '';
+            for (var i = 0; i < input.length; i++) {
+                if (input[i] == ' ') {
+                    output += ' ';
+                } else {
+                    output += morseCode[input[i]] + ' ';
+                }
+            }
+            document.getElementById('output').value = output;
+        }
+
+        function decode() {
+            var input = document.getElementById('input').value.split(' ');
+            var output = '';
+            for (var i = 0; i < input.length; i++) {
+                if (input[i] == '') {
+                    output += ' ';
+                } else {
+                    for (var letter in morseCode) {
+                        if (morseCode[letter] == input[i]) {
+                            output += letter.toLowerCase(); //默认解显示为小写字母
+                            break;
+                        }
+                    }
+                }
+            }
+            document.getElementById('output').value = output;
+        }
+               function copyToClipboard() {
+            /* 复制函数 */
+            var copyText = document.getElementById("output");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+            document.execCommand("copy");
+
+            /* Show copy alert */
+            var copyAlert = document.getElementById("copyAlert");
+            copyAlert.style.display = "block";
+            setTimeout(function(){ 
+                copyAlert.style.display = "none"; 
+            }, 3000);//已复制提示显示3秒
+        }
+    </script>
+</body>
+</html>

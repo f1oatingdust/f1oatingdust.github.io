@@ -1,29 +1,54 @@
-<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>汪财摩斯码编解码器</title>
-    <style>
-        textarea {
+<style>
+
+ textarea {
             width: 100%;
             height: 100px;
         }
-    </style>
+
+.line {
+position: absolute;
+width: 600px;
+height: 1px;
+background: black;
+transform-origin: center;
+animation: rotate 9s linear infinite;
+}
+
+@keyframes rotate {
+0% {
+opacity: 0;
+transform: rotate(0deg);
+}
+
+50% {
+opacity: 1;
+}
+
+100% {
+opacity: 0;
+transform: rotate(360deg);
+}
+}
+</style>
 </head>
+
 <body>
-    <h1>汪财摩斯码编解码器</h1>
+   <h1>汪财摩斯码编解码器</h1>
 
     <h2>输入(只支持26个英文字母和空格):</h2>
-    <textarea id="input"></textarea>
+   <textarea id="input"></textarea>
     <button onclick="encode()">编码</button>
     <button onclick="decode()">解码</button>
     <h2>输出:</h2>
     <textarea id="output"></textarea>
     <button onclick="copyToClipboard()">复制</button>
     <p id="copyAlert" style="display: none">已复制到剪贴板</p>
+<div class="line" id="line1" ></div>
 
-    <script>
-        var morseCode = {
+<script>
+ var morseCode = {
             "A": "汪呜",
             "B": "呜汪汪汪",
             "C": "呜汪呜汪",
@@ -74,7 +99,7 @@
                 } else {
                     for (var letter in morseCode) {
                         if (morseCode[letter] == input[i]) {
-                            output += letter.toLowerCase(); //默认解显示为小写字母
+                            output += letter.toLowerCase(); 
                             break;
                         }
                     }
@@ -96,6 +121,38 @@
                 copyAlert.style.display = "none"; 
             }, 3000);//已复制提示显示3秒
         }
-    </script>
+ document.getElementById("line1").style.display = "none"; 
+let lines = [];
+
+for(let i=0; i<20; i++) {
+let line = document.createElement('div');
+line.className = 'line';
+
+let delay = (Math.random() * 3 + 1).toFixed(1);
+line.style['animation-delay'] = delay + 's';
+
+document.body.appendChild(line);
+lines.push(line);
+}
+
+function reset() {
+lines.forEach(line => {
+let left = Math.random() * 800 + 100;
+let top = Math.random() * 100 + 100;
+
+let delay = (Math.random() * 3 + 1).toFixed(1);
+line.style['animation-delay'] = delay + 's';
+
+line.style.left = left + 'px';
+line.style.top = top + 'px';
+});
+}
+
+lines.forEach(line => {
+line.addEventListener('animationiteration', reset);
+});
+
+</script>
+
 </body>
 </html>
